@@ -1,34 +1,42 @@
 <template>
+    <!-- Dynamically apply 'start' class based on 'start' data property -->
     <div class="block" :class="{start: start}" @click="stopTimer">
+        <!-- Displaying message (initially "wait" then "click me") -->
         {{ message }}
     </div>
 </template>
 
 <script>
 export default {
-    props: ["delay"],
+    name: "Block",
+    props: ["delay"], // Receiving delay as a prop
     data() {
         return {
-            message: "wait",
-            start: false,
-            startTime: null,
-            reactionTime: null,
+            message: "wait", // Initial message
+            start: false, // Flag to indicate if timer has started
+            startTime: null, // Start time of the timer
+            reactionTime: null, // Time taken to react
         }
     },
     mounted() {
+        // Setting timeout to change message and start the timer after 'delay' milliseconds
         setTimeout(() => {
-            this.message = "click me"
-            this.start = true
-            this.startTimer()
+            this.message = "click me" // Changing message
+            this.start = true // Starting the timer
+            this.startTimer() // Starting the timer
         }, this.delay)
     },
     methods: {
+        // Method to start the timer
         startTimer() {
-            this.startTime = Date.now()
+            this.startTime = Date.now() // Setting start time of the timer
         },
+        // Method to stop the timer on click
         stopTimer() {
+            // If timer hasn't started, emit 'end' event with "N/A"
             if (!this.start) return this.$emit('end', "N/A")
 
+            // Calculating reaction time and emitting 'end' event with the reaction time
             this.reactionTime = Date.now() - this.startTime
             this.$emit('end', this.reactionTime)
         },
@@ -38,6 +46,7 @@ export default {
 
 <style>
 .block {
+    /* Styling for the block element */
     width: 80vw;
     max-width: 400px;
     height: 80vw;
@@ -55,6 +64,7 @@ export default {
 }
 
 .block.start {
+    /* Styling for the block element when 'start' is true */
     background-color: #0faf87;
 }
 </style>
